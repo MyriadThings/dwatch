@@ -22,7 +22,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer watcher.Close()
+	defer func(watcher *fsnotify.Watcher) {
+		_ = watcher.Close()
+	}(watcher)
 
 	done := make(chan bool)
 	printer := make(chan fsnotify.Event)
